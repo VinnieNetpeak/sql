@@ -40,11 +40,16 @@ WITH
   ON
     sourse_table.user_pseudo_id = GA.user_pseudo_id
     AND sourse_table.session_number = GA.session_number ),
-multichannel as(
-    SELECT STRING_AGG(source_medium, ' > ') OVER (PARTITION BY user_pseudo_id ORDER BY session_number ROWS UNBOUNDED PRECEDING) AS multichannel,
-    SUM(lead) as sum_lead
-    FROM lead_table GROUP by user_pseudo_id, source_medium, session_number)
-SELECT
-  *
-FROM
-  multichannel order by sum_lead desc
+    multichannel_analyse as (
+        SELECT *,
+         CASE WHEN session_number = 1 THEN 1
+         ELSE 0 END as first_interaction,
+         CASE WHEN lead > 0 THEN 1
+         ELSE 0 END as lead_interaction,
+         CASE WHEN session_number >1 and ifnull(lead, 0) = 0 THEN 1
+         ELSE 0 END as assosiated_interaction
+    
+         from lead_table)
+       
+
+SELECT 	source_medium, SUM(first_interaction) as first_interaction, SUM(lead_interaction) as lead_interaction, SUM(assosiated_interaction) as assosiated_interaction FROM multichannel_analyse group by source_medium
