@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: base_deals
+    description: Base table with orders and refunds, product array excluded
+  - name: stg_products
+    description: Products table with transaction id's and quantity
+  - name: base_products
+    description: Ready for use table with product names and categories regarding item revenue, quantity, platform, payment method and status 
+  - name: ga4_raw__source
+    description: Joined table for ecommerce GA4 data and database
+  - name: ga4_funnel
+    description: Ecommerce first touch funnel (signup - item view - add to cart - purchase)
+  - name: raw_orderscohort
+    description: Cohorts table by orders
+  - name: raw_ordersperuser
+    description: Table for orders per user and aov
+  - name: ga4_cohort
+    description: Cohorts table by user visits
+  - name: stg_ltv
+    description: LTV calculations table
+  - name: raw_revcohort
+    description: Cohorts week table by revenue
+  - name: ga4_visitscohort
+    description: Cohorts week table by visits
